@@ -1,0 +1,61 @@
+<link rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+    body {
+        overflow-x: hidden;
+    }
+    .even{
+        background-color: #d01b1b3b;
+    }
+    .odd{
+        background-color: #0000002e;
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="">
+                    {{ form.as_p }}
+                    <p style="color: brown">
+                        Note: If you want to use only one of them let the other be blank and submit.
+                    </p>
+                    <button class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="col-md-10">
+        <a class="navbar-brand" href="{% url 'content:index' %}">Real Estate {{ content_type }}</a>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Filter {{ content_type }}
+          </button>
+    </div>
+</nav> 
+
+{% if querysets %}
+    <div class="row">
+        {% for query in querysets %}
+            <div class="col-sm-3 card {% cycle 'even' 'odd' %}">
+                <p><a href="{{query.url}}" target="_blank">{{ query.title }}</a></p>
+                <p>
+                    <span style="float: left;">{{ query.author }}</span>
+                <span style="float: right;">{{ query.date }}</span>
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+    
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>

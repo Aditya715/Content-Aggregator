@@ -1,0 +1,23 @@
+<link rel="stylesheet" 
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="col-md-10">
+        <a class="navbar-brand" href="{% url 'content:index' %}">
+            <u>Welcome to the Content Aggregator</u>
+        </a>
+    </div>
+</nav> 
+
+<br>
+<div class="ml-3">
+    <h4>What do you want to see?</h4>
+    <h5>
+        i)
+        <a href="{% url 'content:view_news' %}">News</a>
+    </h5>
+    <h5>
+        ii)
+        <a href="{% url 'content:view_articles' %}">Articles</a>
+    </h5>
+</div>
