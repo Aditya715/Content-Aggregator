@@ -3,7 +3,11 @@
     and save it to a database for further use.
 """
 
-from datetime import datetime
+import sys
+from datetime import (
+    datetime, 
+    timedelta
+)
 import requests
 from bs4 import BeautifulSoup as bs
 from content.models import (
@@ -70,16 +74,37 @@ def scrap_99acres():
     """
     news_url = "https://www.99acres.com/articles/real-estate-news"
     articles_url = "https://www.99acres.com/articles/real-estate-market-updates.html"
-    num_of_pages_to_crwal = 10       # max value is 200.
+    num_of_pages_to_crwal = 20       # max value is 200.
 
     news_list = scrap_data(news_url, num_of_pages_to_crwal)
     articles_list = scrap_data(articles_url, num_of_pages_to_crwal)
     
     for news in news_list:
-        RealStateNews(**news).save()
+        # handling database error
+        try:
+            RealStateNews(**news).save()
+        except Exception as e:
+            print("[+]....Error occured -> {}".format(e))
     
     for article in articles_list:
-        RealStateArticle(**article).save()
+        # handling database error
+        try:
+            RealStateArticle(**article).save()
+        except Exception as e:
+            print("[+]....Error occured -> {}".format(e))
+
 
 def run():
-    scrap_99acres()
+    while True:
+        now = datetime.now()
+        if now.hour == 1 and now.minute <= 10:
+            scrap_99acres()
+            time.sleep(60*60)
+        else:
+            current_date = datetime.today().date()
+            next_date = str(current_date + timedelta(days=1))
+            run_time = datetime.strptime(next_date + " 01:00:00", '%Y-%m-%d %H:%M:%S')
+            current_time = datetime.now()
+            difference = run_time - current_time
+            sys.stdout.write("Time left to run scripts for data : " + str(difference) + "\r")
+            sys.stdout.flush()
